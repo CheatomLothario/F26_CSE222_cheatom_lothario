@@ -20,7 +20,9 @@ class AccountGUI:
         # Instructions for the User
         instructions = tk.Label(
             self.account_window,
-            text = "Enter a username and password to create an account."
+            text = "Enter a username and password below to create an account.\n"
+                   "Enter the password again to confirm.",
+            justify = "center"
         )
         instructions.pack(pady=10)
 
@@ -36,6 +38,7 @@ class AccountGUI:
             width = 30
         )
         self.username_entry.pack(pady=5)
+        self.username_entry.focus_set()
 
         # Password
         password_label = tk.Label(
@@ -83,6 +86,9 @@ class AccountGUI:
         )
         self.cancel_button.pack(pady=5)
 
+        # Lets "Enter" work the same as clicking
+        self.account_window.bind("<Return>", self.submit_account)
+
     def check_account(self):
 
         # Collects User Information
@@ -109,3 +115,6 @@ class AccountGUI:
                 "Account",
                 "Account information is valid."
             )
+
+    def submit_account(self, event):
+        self.check_account()

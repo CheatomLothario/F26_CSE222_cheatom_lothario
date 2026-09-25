@@ -20,7 +20,9 @@ class LoginGUI:
         # Instructions for the User
         instructions = tk.Label(
             self.login_window,
-            text = "Enter your username and password to login."
+            text = "Enter your username and password below to login.\n"
+                   "When done, click Login to continue.",
+            justify = "center"
         )
         instructions.pack(pady=10)
 
@@ -36,6 +38,7 @@ class LoginGUI:
             width = 30
         )
         self.username_entry.pack(pady=5)
+        self.username_entry.focus_set()
 
         # Password
         password_label = tk.Label(
@@ -69,6 +72,9 @@ class LoginGUI:
         )
         self.cancel_button.pack(pady=5)
 
+        # Lets "Enter" work the same as clicking
+        self.login_window.bind("<Return>", self.submit_login)
+
     def check_login(self):
 
         # Collects User Information
@@ -86,3 +92,6 @@ class LoginGUI:
                 "Login",
                 "Login information is valid."
             )
+
+    def submit_login(self, event):
+        self.check_login()
