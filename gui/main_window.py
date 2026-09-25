@@ -1,5 +1,6 @@
 import tkinter as tk
 from account_gui import AccountGUI
+from login_gui import LoginGUI
 
 class MainWindow:
     def __init__(self):
@@ -35,7 +36,8 @@ class MainWindow:
         self.login_button = tk.Button(
             self.root,
             text = "Login",
-            width = 20
+            width = 20,
+            command = self.open_login_window
         )
         self.login_button.pack(pady=5)
 
@@ -53,6 +55,8 @@ class MainWindow:
 
     def open_account_window(self):
         AccountGUI(self.root)
+    def open_login_window(self):
+        LoginGUI(self.root)
         
         
 if __name__ == "__main__":
