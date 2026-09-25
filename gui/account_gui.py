@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 class AccountGUI:
     def __init__(self, parent):
@@ -68,7 +69,8 @@ class AccountGUI:
         self.create_button = tk.Button(
             self.account_window,
             text = "Create Account",
-            width = 20
+            width = 20,
+            command = self.check_account
         )
         self.create_button.pack(pady=10)
 
@@ -80,3 +82,30 @@ class AccountGUI:
             command = self.account_window.destroy
         )
         self.cancel_button.pack(pady=5)
+
+    def check_account(self):
+
+        # Collects User Information
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        confirm_password = self.confirm_entry.get()
+
+        # Checks for Information
+        if username == "" or password == "" or confirm_password == "":
+            messagebox.showerror(
+                "Account Error",
+                "Please fill out all fields."
+            )
+
+        # Checks for Matching Passwords
+        elif password != confirm_password:
+            messagebox.showerror(
+                "Account Error",
+                "Passwprds do not match."
+            )
+
+        else:
+            messagebox.showinfo(
+                "Account",
+                "Account information is valid."
+            )

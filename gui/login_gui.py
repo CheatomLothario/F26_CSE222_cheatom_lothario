@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 class LoginGUI:
     def __init__(self, parent):
@@ -54,15 +55,34 @@ class LoginGUI:
         self.login_button = tk.Button(
             self.login_window,
             text = "Login",
-            width = 20
+            width = 20,
+            command = self.check_login
         )
         self.login_button.pack(pady=10)
 
         # Cancel Button
         self.cancel_button = tk.Button(
             self.login_window,
-            text = "Cancecl",
+            text = "Cancel",
             width = 20,
             command = self.login_window.destroy
         )
         self.cancel_button.pack(pady=5)
+
+    def check_login(self):
+
+        # Collects User Information
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        # Checks for Information
+        if username == "" or password == "":
+            messagebox.showerror(
+                "Login Error",
+                "Please enter a username and password."
+            )
+        else:
+            messagebox.showinfo(
+                "Login",
+                "Login information is valid."
+            )
