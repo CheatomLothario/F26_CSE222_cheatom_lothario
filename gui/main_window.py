@@ -1,4 +1,5 @@
 import tkinter as tk
+from account_gui import AccountGUI
 
 class MainWindow:
     def __init__(self):
@@ -25,7 +26,8 @@ class MainWindow:
         self.create_account_button = tk.Button(
             self.root,
             text = "Create Account",
-            width = 20
+            width = 20,
+            command = self.open_account_window
         )
         self.create_account_button.pack(pady=5)
 
@@ -48,6 +50,9 @@ class MainWindow:
 
         # Start Loop
         self.root.mainloop()
+
+    def open_account_window(self):
+        AccountGUI(self.root)
         
         
 if __name__ == "__main__":
