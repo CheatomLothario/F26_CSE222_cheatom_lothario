@@ -63,9 +63,26 @@ class MainWindow:
 
 
     def open_account_window(self):
-        AccountGUI(self.root)
+
+        # Checks if Account Window Already Exists
+        if hasattr(self, "account_gui"):
+            if self.account_gui.account_window.winfo_exists():
+                self.account_gui.account_window.lift()
+                self.account_gui.account_window.focus_force()
+                return
+        # Creates Account Window
+        self.account_gui = AccountGUI(self.root)
+        
     def open_login_window(self):
-        LoginGUI(self.root)
+        # Checks if Login Window Already Exists
+        if hasattr(self, "login_gui"):
+            if self.login_gui.login_window.winfo_exists():
+                self.login_gui.login_window.lift()
+                self.login_gui.login_window.focus_force()
+                return
+            
+        # Creates Login Window
+        self.login_gui = LoginGUI(self.root)
         
         
 if __name__ == "__main__":

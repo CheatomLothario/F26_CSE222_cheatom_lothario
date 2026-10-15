@@ -23,6 +23,11 @@ class AccountGUI:
             f"{window_width}x{window_height}+{x}+{y}"
         )
 
+        self.account_window.protocol(
+            "WM_DELETE_WINDOW",
+            self.account_window.destroy
+        )
+
 
         # Title of the Window
         title_label = tk.Label(
