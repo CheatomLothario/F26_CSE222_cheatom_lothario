@@ -10,7 +10,7 @@ class AccountGUI:
 
         # Center Account Creation Window
         window_width = 450
-        window_height = 350
+        window_height = 400
 
         screen_width = self.account_window.winfo_screenwidth()
         screen_height = self.account_window.winfo_screenheight()
@@ -34,8 +34,9 @@ class AccountGUI:
         # Instructions for the User
         instructions = tk.Label(
             self.account_window,
-            text = "Enter a username and password below to create an account.\n"
-                   "Enter the password again to confirm.",
+            text = "Creates username and password.\n"
+                   "Password must be 9+ characters with uppercase,\n"
+                   "lowercase, and a number.",
             justify = "center"
         )
         instructions.pack(pady=10)
@@ -106,7 +107,7 @@ class AccountGUI:
     def check_account(self):
 
         # Collects User Information
-        username = self.username_entry.get()
+        username = self.username_entry.get().strip()
         password = self.password_entry.get()
         confirm_password = self.confirm_entry.get()
 
@@ -116,19 +117,54 @@ class AccountGUI:
                 "Account Error",
                 "Please fill out all fields."
             )
+            return
 
         # Checks for Matching Passwords
-        elif password != confirm_password:
+        if password != confirm_password:
             messagebox.showerror(
                 "Account Error",
                 "Passwords do not match."
             )
+            return
 
-        else:
-            messagebox.showinfo(
-                "Account",
-                "Account information is valid."
+        # Validates Password Requirements
+        password_error = self.validate_password(password)
+
+        if password_error is not None:
+            messagebox.showerror(
+                "Invalid Password",
+                password_error,
+                parent=self.account_window
             )
+            return
+
+        # Confirms Valid Information
+        messagebox.showinfo(
+            "Account",
+            "Account information is valid.",
+            parent=self.account_window
+        )
 
     def submit_account(self, event):
         self.check_account()
+
+    def validate_password(self, password):
+
+        # Checks Password Length
+        if len(password) < 9:
+            return "Password must contain at least 9 characters."
+
+        # Checks for Uppercase Letter
+        if not any(char.isupper() for char in password):
+            return "Password must contain an uppercase letter."
+
+        # Checks for Lowercase Letter
+        if not any (char.islower() for char in password):
+            return "Password must contain a lowercase letter."
+
+        # Checks for Digit
+        if not any (char.isdigit() for char in password):
+            return "Password must contain a digit."
+
+        # Password meets ALL requirements
+        return None
