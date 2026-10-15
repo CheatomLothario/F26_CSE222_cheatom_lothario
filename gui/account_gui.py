@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from account_storage import create_account
 
 class AccountGUI:
     def __init__(self, parent):
@@ -115,7 +116,8 @@ class AccountGUI:
         if username == "" or password == "" or confirm_password == "":
             messagebox.showerror(
                 "Account Error",
-                "Please fill out all fields."
+                "Please fill out all fields.",
+                parent = self.account_window
             )
             return
 
@@ -123,7 +125,8 @@ class AccountGUI:
         if password != confirm_password:
             messagebox.showerror(
                 "Account Error",
-                "Passwords do not match."
+                "Passwords do not match.",
+                parent = self.account_window
             )
             return
 
@@ -138,12 +141,38 @@ class AccountGUI:
             )
             return
 
-        # Confirms Valid Information
+        # Attempts to Create Account
+        try:
+            account_created = create_account(username, password)
+
+        except (OSError, ValueError) as error:
+            messagebox.showerror(
+                "Storage Error",
+                f"Unable to save account: {error}",
+                parent = self.account_window
+            )
+            return
+
+        # Checks for Duplicate Username
+        if not account_created:
+            messagebox.showerror(
+                "Account Error",
+                "This username already exists. Please choose another.",
+                parent = self.account_window
+            )
+            self.username_entry.focus_set()
+            return
+
+        # Confirms Successful Account Creation
         messagebox.showinfo(
-            "Account",
-            "Account information is valid.",
-            parent=self.account_window
+            "Account Created",
+            "Your account has been created successfully!\n"
+            "You can now log in.",
+            parent = self.account_window
         )
+
+        # Closes Account Creation Window
+        self.account_window.destroy()
 
     def submit_account(self, event):
         self.check_account()

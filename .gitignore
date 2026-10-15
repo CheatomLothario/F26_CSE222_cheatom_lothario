@@ -1,0 +1,6 @@
+# Saved Account Information
+accounts.json
+
+# Python Cache Files
+__pycache__/
+*.pyc
