@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from account_storage import verify_account
 
 class LoginGUI:
     def __init__(self, parent):
@@ -49,7 +50,8 @@ class LoginGUI:
 
         self.username_entry = tk.Entry(
             self.login_window,
-            width = 30
+            width = 30,
+            justify = "right"
         )
         self.username_entry.pack(pady=5)
         self.username_entry.focus_set()
@@ -64,7 +66,8 @@ class LoginGUI:
         self.password_entry = tk.Entry(
             self.login_window,
             width = 30,
-            show = "*"
+            show = "*",
+            justify = "right"
         )
         self.password_entry.pack(pady=5)
 
@@ -90,22 +93,56 @@ class LoginGUI:
         self.login_window.bind("<Return>", self.submit_login)
 
     def check_login(self):
-
-        # Collects User Information
-        username = self.username_entry.get()
+        # Retrieves Username and Password
+        username = self.username_entry.get().strip()
         password = self.password_entry.get()
 
-        # Checks for Information
+        # Checks for Empty Fields
         if username == "" or password == "":
             messagebox.showerror(
                 "Login Error",
-                "Please enter a username and password."
+                "Please Enter a username and password.",
+                parent = self.login_window
             )
-        else:
-            messagebox.showinfo(
-                "Login",
-                "Login information is valid."
+            return
+
+        # Attempts to Verify Account
+        try:
+            account_verified = verify_account(username, password)
+
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            messagebox.showerror(
+                "Login Error",
+                f"Unable to verify account information: {error}",
+                parent = self.login_window
             )
+            return
+
+        # Checks Whether Credentials Match
+        if not account_verified:
+            messagebox.showerror(
+                "Login Failed",
+                "Invalid username or password.",
+                parent = self.login_window
+            )
+
+            # Clears Login Entry Fields
+            self.username_entry.delete(0, tk.END)
+            self.password_entry.delete(0, tk.END)
+
+            # Returns Cursor to Username Field
+            self.username_entry.focus_set()
+            return
+
+        # Confirms Successful Login
+        messagebox.showinfo(
+            "Login Successful",
+            f"Welcome, {username}!",
+            parent = self.login_window
+        )
+
+        # Closes Login Window
+        self.login_window.destroy()
 
     def submit_login(self, event):
         self.check_login()

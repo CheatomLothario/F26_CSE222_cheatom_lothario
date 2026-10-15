@@ -60,3 +60,21 @@ def create_account(username, password):
     save_accounts(accounts)
 
     return True
+
+def verify_account(username, password):
+    # Retrieves Saved Accounts
+    accounts = load_accounts()
+
+    # Checks if Username exists
+    if username not in accounts:
+        return False
+
+    # Retrieves Stored Password Information
+    stored_salt = accounts[username]["salt"]
+    stored_password = accounts[username]["password"]
+
+    # Hashes Entered Password with Stored Salt
+    entered_password = hash_password(password, stored_salt)
+
+    # Compares Entered Password with Saved Password
+    return secrets.compare_digest(entered_password, stored_password)
