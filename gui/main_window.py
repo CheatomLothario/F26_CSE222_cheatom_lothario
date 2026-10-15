@@ -7,7 +7,18 @@ class MainWindow:
         # Creates Program Window
         self.root = tk.Tk()
         self.root.title("Weather Data Project")
-        self.root.geometry("450x350")
+
+        # Center Main Window
+        window_width = 450
+        window_height = 350
+
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
         # Title of the Program
         title_label = tk.Label(
@@ -50,8 +61,6 @@ class MainWindow:
         )
         self.cancel_button.pack(pady=5)
 
-        # Start Loop
-        self.root.mainloop()
 
     def open_account_window(self):
         AccountGUI(self.root)
@@ -60,4 +69,5 @@ class MainWindow:
         
         
 if __name__ == "__main__":
-    MainWindow()
+    app = MainWindow()
+    app.root.mainloop()

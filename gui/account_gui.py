@@ -7,7 +7,19 @@ class AccountGUI:
         # Creates Account Creation
         self.account_window = tk.Toplevel(parent)
         self.account_window.title("Create Account")
-        self.account_window.geometry("400x350")
+
+        # Center Account Creation Window
+        window_width = 450
+        window_height = 350
+
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
 
         # Title of the Window
         title_label = tk.Label(
@@ -107,7 +119,7 @@ class AccountGUI:
         elif password != confirm_password:
             messagebox.showerror(
                 "Account Error",
-                "Passwprds do not match."
+                "Passwords do not match."
             )
 
         else:

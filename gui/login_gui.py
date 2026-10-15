@@ -7,7 +7,19 @@ class LoginGUI:
         # Creates Login Window
         self.login_window = tk.Toplevel(parent)
         self.login_window.title("Login")
-        self.login_window.geometry("400x300")
+
+        # Center Login Window
+        window_width = 450
+        window_height = 350
+
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+
+        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
 
         # Title of the Window
         title_label = tk.Label(
