@@ -12,13 +12,15 @@ class AccountGUI:
         window_width = 450
         window_height = 350
 
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
+        screen_width = self.account_window.winfo_screenwidth()
+        screen_height = self.account_window.winfo_screenheight()
 
         x = (screen_width - window_width) // 2
         y = (screen_height - window_height) // 2
 
-        self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        self.account_window.geometry(
+            f"{window_width}x{window_height}+{x}+{y}"
+        )
 
 
         # Title of the Window
