@@ -3,7 +3,10 @@ from tkinter import messagebox
 from account_storage import verify_account
 
 class LoginGUI:
-    def __init__(self, parent):
+    def __init__(self, parent, on_login_success):
+
+        # Stores Succesful Login
+        self.on_login_success = on_login_success
 
         # Creates Login Window
         self.login_window = tk.Toplevel(parent)
@@ -162,6 +165,9 @@ class LoginGUI:
 
         # Closes Login Window
         self.login_window.destroy()
+
+        # Opens Main Weather Interface
+        self.on_login_success(username)
 
     def submit_login(self, event):
         self.check_login()
