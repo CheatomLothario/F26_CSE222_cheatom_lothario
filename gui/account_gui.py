@@ -136,6 +136,13 @@ class AccountGUI:
                 "Passwords do not match.",
                 parent = self.account_window
             )
+
+            # Clears Password Field
+            self.password_entry.delete(0, tk.END)
+            self.confirm_entry.delete(0, tk.END)
+
+            # Returns Cursor to Password Field
+            self.password_entry.focus_set()
             return
 
         # Validates Password Requirements
@@ -147,6 +154,13 @@ class AccountGUI:
                 password_error,
                 parent=self.account_window
             )
+
+            # Clears Invalid Password
+            self.password_entry.delete(0, tk.END)
+            self.confirm_entry.delete(0, tk.END)
+
+            # Returns Cursor to Password Field
+            self.password_entry,focus_set()
             return
 
         # Attempts to Create Account
@@ -168,6 +182,12 @@ class AccountGUI:
                 "This username already exists. Please choose another.",
                 parent = self.account_window
             )
+            self.username_entry.focus_set()
+
+            # Clears Username Field
+            self.username_entry.delete(0, tk.END)
+            
+            # Returns Cursor to Username Field
             self.username_entry.focus_set()
             return
 

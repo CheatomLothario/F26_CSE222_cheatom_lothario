@@ -105,7 +105,7 @@ class MainWindow:
         self.root.title("Weather Data Program")
 
         # Centers Weather Interface
-        window_width = 600
+        window_width = 650
         window_height = 500
 
         screen_width = self.root.winfo_screenwidth()
@@ -312,6 +312,15 @@ class MainWindow:
             width = 15
         )
         self.compute_button.pack(side = "left", padx = 10)
+
+        # Exit Button
+        self.exit_button = tk.Button(
+            button_frame,
+            text = "Exit",
+            width = 15,
+            command = self.root.destroy
+        )
+        self.exit_button.pack(side = "left", padx = 10)
 
         # Centers Weather Components
         calculation_frame.grid_columnconfigure(0, weight = 1)
