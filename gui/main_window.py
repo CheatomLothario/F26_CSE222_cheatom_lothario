@@ -93,6 +93,11 @@ class MainWindow:
 
     def show_weather_interface(self, username):
 
+        # Closes Account Creation Window if Open
+        if hasattr(self, "account_gui"):
+            if self.account_gui.account_window.winfo_exists():
+                self.account_gui.account_window.destroy()
+
         # Removes Initial Menu
         self.menu_frame.destroy()
 
@@ -101,7 +106,7 @@ class MainWindow:
 
         # Centers Weather Interface
         window_width = 600
-        window_height = 450
+        window_height = 500
 
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
@@ -128,6 +133,16 @@ class MainWindow:
             font = ("Arial", 12)
         )
         welcome_label.pack(pady = 10)
+
+        # Weather Interface Instructions
+        instructions = tk.Label(
+            self.weather_frame,
+            text = "Enter the weather measurements below. \n"
+                   "Click Compute to calculate the results.",
+            justify = "center",
+            font = ("Arial", 10)
+        )
+        instructions.pack(pady = (0, 15))
 
         # Meteorlogical Calculations Frame
         calculation_frame = tk.LabelFrame(

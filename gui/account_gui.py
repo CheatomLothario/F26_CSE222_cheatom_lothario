@@ -23,6 +23,9 @@ class AccountGUI:
             f"{window_width}x{window_height}+{x}+{y}"
         )
 
+        # Brings Account Creation Window to Front
+        self.account_window.lift()
+
         self.account_window.protocol(
             "WM_DELETE_WINDOW",
             self.account_window.destroy

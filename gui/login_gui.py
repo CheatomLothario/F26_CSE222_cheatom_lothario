@@ -26,6 +26,9 @@ class LoginGUI:
             f"{window_width}x{window_height}+{x}+{y}"
         )
 
+        # Brings Login Window to Front
+        self.login_window.lift()
+
         self.login_window.protocol(
             "WM_DELETE_WINDOW",
             self.login_window.destroy
