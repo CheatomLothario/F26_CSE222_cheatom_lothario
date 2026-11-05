@@ -330,6 +330,15 @@ class MainWindow:
         calculation_frame.grid_columnconfigure(0, weight = 1)
         calculation_frame.grid_columnconfigure(1, weight = 1)
 
+        # Status Message
+        self.status_label = tk.Label(
+            self.weather_frame,
+            text = "Enter Weather measurements and click Compute",
+            font = ("Arial", 10),
+            fg = "blue"
+        )
+        self.status_label.pack(pady = 5)
+        
         # Places Cursor in Temperature Entry
         self.temperature_entry.focus_set()
 
@@ -344,8 +353,21 @@ class MainWindow:
         self.wind_chill_result.config(text = "-")
         self.cloud_base_result.config(text = "-")
 
+        # Resets Status Message
+        self.status_label.config(
+            text = "Validating weather measurements...",
+            fg = "blue"
+        )
+
         # Checks for Empty Fields
         if not temperature_input or not wind_speed_input or not dew_point_input:
+
+            # Updates Status for Missing Input
+            self.status_label.config(
+                text = "Error: All weather measurements are required.",
+                fg = "red"
+            )
+
             messagebox.showerror(
                 "Input Error",
                 "All weather measurements are required.",
@@ -360,6 +382,13 @@ class MainWindow:
             dew_point = float(dew_point_input)
 
         except ValueError:
+
+            # Updates Status for Invalid Numbers
+            self.status_label.config(
+                text = "Error: Please enter numeric values only.",
+                fg = "red"
+            )
+            
             messagebox.showerror(
                 "Input Error",
                 "Please enter numeric values only.",
@@ -370,6 +399,13 @@ class MainWindow:
         # Checks for Non-finite Numbers
         if not all(math.isfinite(value) for value in
                    (temperature, wind_speed, dew_point)):
+
+            # Updates Status for Non-finite Numbers
+            self.status_label.config(
+                text = "Error: Please enter finite numeric values.",
+                fg = "red"
+            )
+            
             messagebox.showerror(
                 "Input Error",
                 "Please enter finite numeric values.",
@@ -379,6 +415,13 @@ class MainWindow:
 
         # Checks for Invalid Wind Speed
         if wind_speed < 0:
+
+            # Updates Status for Invalid Wind Speed
+            self.status_label.config(
+                text = "Error: Wind Speed cannot be negative.",
+                fg = "red"
+            )
+            
             messagebox.showerror(
                 "Input Error",
                 "Wind speed cannot be negative.",
@@ -388,6 +431,13 @@ class MainWindow:
         
         # Checks for Invalid Dew Point
         if dew_point > temperature:
+
+            # Updates Status for Invalid Dew Point
+            self.status_label.config(
+                text = "Error: Dew Point cannot exceed temperature.",
+                fg = "red"
+            )
+            
             messagebox.showerror(
                 "Input Error",
                 "Dew point cannot exceed the air temperature.",
@@ -412,6 +462,12 @@ class MainWindow:
                 text = "Not Applicable"
             )
 
+            # Updates Status for Invalid Wind Chill Conditions
+            self.status_label.config(
+                text = "Wind chill not applicable under these conditions.",
+                fg = "orange"
+            )
+
             messagebox.showwarning(
                 "Wind Chill Not Applicable",
                 "Wind chill is only defined when the "
@@ -431,6 +487,13 @@ class MainWindow:
         self.cloud_base_result.config(
             text = f"{cloud_base:.2f} feet"
         )
+
+        # Displays Success Status
+        if wind_chill is not None:
+            self.status_label.config(
+                text = "Weather Calculations completed successfully.",
+                fg = "green"
+            )
         
 if __name__ == "__main__":
     app = MainWindow()
