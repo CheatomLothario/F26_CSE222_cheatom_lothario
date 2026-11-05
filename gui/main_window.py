@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from account_gui import AccountGUI
 from login_gui import LoginGUI
+from weather_calculations import calculate_wind_chill
 
 class MainWindow:
     def __init__(self):
@@ -394,11 +395,31 @@ class MainWindow:
             )
             return
 
-        # Input Passed Validation
-        print("Weather input validated successfully.")
-        print("Temperature:", temperature)
-        print("Wind Speed:", wind_speed)
-        print("Dew Point:", dew_point)
+        # Calculates Wind Chill Factor
+        wind_chill = calculate_wind_chill(
+            temperature,
+            wind_speed
+        )
+
+        # Displays Wind Chill Result
+        if wind_chill is not None:
+            self.wind_chill_result.config(
+                text = f"{wind_chill:.2f} °F"
+            )
+
+        else:
+            self.wind_chill_result.config(
+                text = "Not Applicable"
+            )
+
+            messagebox.showwarning(
+                "Wind Chill Not Applicable",
+                "Wind chill is only defined when the "
+                "temperature is 50°F or lower and the "
+                "wind speed is greater than 3 mph.",
+                parent = self.root
+
+            )
         
 if __name__ == "__main__":
     app = MainWindow()
