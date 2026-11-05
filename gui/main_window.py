@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from account_gui import AccountGUI
 from login_gui import LoginGUI
-from weather_calculations import calculate_wind_chill
+from weather_calculations import calculate_wind_chill, calculate_cloud_base
 
 class MainWindow:
     def __init__(self):
@@ -420,6 +420,17 @@ class MainWindow:
                 parent = self.root
 
             )
+
+        # Calculates Cloud Base Altitude
+        cloud_base = calculate_cloud_base(
+            temperature,
+            dew_point
+        )
+
+        # Displays Cloud Base Result
+        self.cloud_base_result.config(
+            text = f"{cloud_base:.2f} feet"
+        )
         
 if __name__ == "__main__":
     app = MainWindow()
