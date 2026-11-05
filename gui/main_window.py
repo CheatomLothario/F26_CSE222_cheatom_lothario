@@ -1,4 +1,6 @@
+import math
 import tkinter as tk
+from tkinter import messagebox
 from account_gui import AccountGUI
 from login_gui import LoginGUI
 
@@ -309,7 +311,8 @@ class MainWindow:
         self.compute_button = tk.Button(
             button_frame,
             text = "Compute",
-            width = 15
+            width = 15,
+            command = self.process_weather_data
         )
         self.compute_button.pack(side = "left", padx = 10)
 
@@ -328,6 +331,74 @@ class MainWindow:
 
         # Places Cursor in Temperature Entry
         self.temperature_entry.focus_set()
+
+    def process_weather_data(self):
+
+        # Retrieves Keyboard Input
+        temperature_input = self.temperature_entry.get().strip()
+        wind_speed_input = self.wind_speed_entry.get().strip()
+        dew_point_input = self.dew_point_entry.get().strip()
+
+        # Clears Previous Results
+        self.wind_chill_result.config(text = "-")
+        self.cloud_base_result.config(text = "-")
+
+        # Checks for Empty Fields
+        if not temperature_input or not wind_speed_input or not dew_point_input:
+            messagebox.showerror(
+                "Input Error",
+                "All weather measurements are required.",
+                parent = self.root
+            )
+            return
+
+        # Converts Input to Numbers
+        try:
+            temperature = float(temperature_input)
+            wind_speed = float(wind_speed_input)
+            dew_point = float(dew_point_input)
+
+        except ValueError:
+            messagebox.showerror(
+                "Input Error",
+                "Please enter numeric values only.",
+                parent = self.root
+            )
+            return
+
+        # Checks for Non-finite Numbers
+        if not all(math.isfinite(value) for value in
+                   (temperature, wind_speed, dew_point)):
+            messagebox.showerror(
+                "Input Error",
+                "Please enter finite numeric values.",
+                parent = self.root
+            )
+            return
+
+        # Checks for Invalid Wind Speed
+        if wind_speed < 0:
+            messagebox.showerror(
+                "Input Error",
+                "Wind speed cannot be negative.",
+                parent = self.root
+            )
+            return
+        
+        # Checks for Invalid Dew Point
+        if dew_point > temperature:
+            messagebox.showerror(
+                "Input Error",
+                "Dew point cannot exceed the air temperature.",
+                parent = self.root
+            )
+            return
+
+        # Input Passed Validation
+        print("Weather input validated successfully.")
+        print("Temperature:", temperature)
+        print("Wind Speed:", wind_speed)
+        print("Dew Point:", dew_point)
         
 if __name__ == "__main__":
     app = MainWindow()
