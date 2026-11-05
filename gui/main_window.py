@@ -339,9 +339,37 @@ class MainWindow:
         )
         self.status_label.pack(pady = 5)
         
+        # Clears Results When Weather Inputs Change
+        self.temperature_entry.bind(
+            "<KeyRelease>",
+            self.clear_weather_results
+        )
+
+        self.wind_speed_entry.bind(
+            "<KeyRelease>",
+            self.clear_weather_results
+        )
+
+        self.dew_point_entry.bind(
+            "<KeyRelease>",
+            self.clear_weather_results
+        )
+
         # Places Cursor in Temperature Entry
         self.temperature_entry.focus_set()
 
+    def clear_weather_results(self, event=None):
+
+        # Clears Previous Calculation Results
+        self.wind_chill_result.config(text="-")
+        self.cloud_base_result.config(text="-")
+
+        # Updates Status Message
+        self.status_label.config(
+            text = "Weather measurements changed. Click Compute.",
+            fg = "blue"
+        )
+        
     def process_weather_data(self):
 
         # Retrieves Keyboard Input
