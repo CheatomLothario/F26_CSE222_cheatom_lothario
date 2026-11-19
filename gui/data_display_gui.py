@@ -10,8 +10,8 @@ class DataDisplayGUI:
         self.display_window.title("Weather Data Project")
 
         # Sets Window Dimensions
-        window_width = 750
-        window_height = 450
+        window_width = 850
+        window_height = 500
 
         # Centers Data Display Window
         screen_width = self.display_window.winfo_screenwidth()
@@ -23,6 +23,9 @@ class DataDisplayGUI:
         self.display_window.geometry(
             f"{window_width}x{window_height}+{x}+{y}"
         )
+
+        # Tracks Number of Weather Entries Displayed
+        self.entry_count = 0
 
         # Creates Main Frame
         self.display_frame = tk.Frame(
@@ -49,14 +52,27 @@ class DataDisplayGUI:
         )
         instructions.pack(pady=(0, 10))
 
+        # Displays Number of Recorded Weather Entries
+        self.entry_count_label = tk.Label(
+            self.display_frame,
+            text="Total Weather Entries: 0",
+            font=("Arial", 10, "bold"),
+            fg="blue"
+        )
+        self.entry_count_label.pack(pady=(0, 10))
+
         # Creates Scrollable Text Display
         self.data_text = scrolledtext.ScrolledText(
             self.display_frame,
             width=85,
             height=18,
-            font=("Courier New", 10),
+            font=("Courier New", 11),
             wrap="none",
-            state="disabled"
+            state="disabled",
+            bg="#F5F5F5",
+            fg="black",
+            padx=10,
+            pady=10
         )
         self.data_text.pack(fill="both", expand=True)
 
@@ -71,6 +87,12 @@ class DataDisplayGUI:
 
         # Brings Window to Front
         self.display_window.lift()
+
+        # Handles Window Close Button
+        self.display_window.protocol(
+            "WM_DELETE_WINDOW",
+            self.close_window
+        )
 
         # Displays Table Headings
         self.display_headings()
@@ -108,7 +130,7 @@ class DataDisplayGUI:
         cloud_base
     ):
 
-        # Handles Wind CHill When Not Applicable
+        # Handles Wind Chill When Not Applicable
         if wind_chill is None:
             wind_chill_text = "N/A"
         else:
@@ -134,6 +156,14 @@ class DataDisplayGUI:
 
         # Disables Text Widget
         self.data_text.config(state="disabled")
+
+        # Increased Weather Entry Count
+        self.entry_count += 1
+
+        # Updates Entry Count Label
+        self.entry_count_label.config(
+            text=f"Total Weather Entries: {self.entry_count}"
+        )
 
     def close_window(self):
 
