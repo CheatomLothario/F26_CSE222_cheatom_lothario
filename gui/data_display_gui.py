@@ -72,6 +72,69 @@ class DataDisplayGUI:
         # Brings Window to Front
         self.display_window.lift()
 
+        # Displays Table Headings
+        self.display_headings()
+
+    def display_headings(self):
+
+        # Creates Column Headings
+        headings = (
+            f"{'Temp (F)':<12}"
+            f"{'Wind (mph)':<12}"
+            f"{'Dew Pt (F)':<12}"
+            f"{'Wind Chill':<15}"
+            f"{'Cloud Base':<15}\n"
+        )
+
+        # Creates Separator Line
+        separator = "-" * 66 + "\n"
+
+        # Enables Text Widget
+        self.data_text.config(state="normal")
+
+        # Inserts Headings and Separator
+        self.data_text.insert(tk.END, headings)
+        self.data_text.insert(tk.END, separator)
+
+        # Disables Text Widget
+        self.data_text.config(state="disabled")
+
+    def append_weather_data(
+        self,
+        temperature,
+        wind_speed,
+        dew_point,
+        wind_chill,
+        cloud_base
+    ):
+
+        # Handles Wind CHill When Not Applicable
+        if wind_chill is None:
+            wind_chill_text = "N/A"
+        else:
+            wind_chill_text = f"{wind_chill:.2f}"
+
+        # Formats Weather Data into Columns
+        data_row = (
+            f"{temperature:<12.2f}"
+            f"{wind_speed:<12.2f}"
+            f"{dew_point:<12.2f}"
+            f"{wind_chill_text:<15}"
+            f"{cloud_base:<15.2f}\n"
+        )
+
+        # Enables Text Widget
+        self.data_text.config(state="normal")
+
+        # Appends Weather Data
+        self.data_text.insert(tk.END, data_row)
+
+        # Scrolls to Most Recent Entry
+        self.data_text.see(tk.END)
+
+        # Disables Text Widget
+        self.data_text.config(state="disabled")
+
     def close_window(self):
 
         # Closes Data Display Window
@@ -80,17 +143,47 @@ class DataDisplayGUI:
 
 if __name__ == "__main__":
 
-    # Creates Temporary Root Window for Testing
+    # Creates Temporary Root Window
     root = tk.Tk()
     root.withdraw()
 
-    # Opens Data Display Window
+    # Creates Data Display Window
     app = DataDisplayGUI(root)
 
-    # Closes Test Application When Display Window Closes
+    # Adds Sample Weather Data
+    app.append_weather_data(
+        40,
+        10,
+        30,
+        33.64,
+        2272.73
+    )
+
+    app.append_weather_data(
+        35,
+        15,
+        25,
+        25.58,
+        2272.73
+    )
+
+    app.append_weather_data(
+        60,
+        8,
+        45,
+        None,
+        3409.09
+    )
+
+    # Ensures Both Close Methods Exit the Test
     app.display_window.protocol(
         "WM_DELETE_WINDOW",
         root.destroy
     )
+
+    # Updates Close Button for Standalone Testing
+    for widget in app.display_frame.winfo_children():
+        if isinstance(widget, tk.Button):
+            widget.config(command=root.destroy)
 
     root.mainloop()
