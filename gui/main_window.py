@@ -69,8 +69,11 @@ class MainWindow:
         )
         self.cancel_button.pack(pady=5)
 
-        # Tracks Data Display WIndow
+        # Tracks Data Display Window
         self.data_display = None
+
+        # Stores Weather Data Throughout the Session
+        self.weather_history = []
 
 
     def open_account_window(self):
@@ -521,6 +524,33 @@ class MainWindow:
             text = f"{cloud_base:.2f} feet"
         )
 
+        # Stores Successfully Calculated Weather Data
+        weather_data = (
+            temperature,
+            wind_speed,
+            dew_point,
+            wind_chill,
+            cloud_base
+        )
+
+        self.weather_history.append(weather_data)
+
+        # Checks Whether Output Window Is Already Open
+        if (
+            self.data_display is not None
+            and self.data_display.display_window.winfo_exists()
+        ):
+
+            # Appends New Data to Existing Window
+            self.data_display.append_weather_data(
+                *weather_data
+            )
+
+        else:
+
+            # Opens Window and Displays All Stored Data
+            self.show_data_display()
+
         # Displays Success Status
         if wind_chill is not None:
             self.status_label.config(
@@ -544,6 +574,12 @@ class MainWindow:
 
             # Creates New Data Display Window
             self.data_display = DataDisplayGUI(self.root)
+
+            # Restores Previously Entered Weather Data
+            for weather_data in self.weather_history:
+                self.data_display.append_weather_data(
+                    *weather_data
+                )
         
 if __name__ == "__main__":
     app = MainWindow()
