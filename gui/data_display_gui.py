@@ -61,6 +61,15 @@ class DataDisplayGUI:
         )
         self.entry_count_label.pack(pady=(0, 10))
 
+        # Displays Output Window Status
+        self.output_status = tk.Label(
+            self.display_frame,
+            text="No Weather measurements recorded.",
+            font=("Arial", 10),
+            fg="gray"
+        )
+        self.output_status.pack(pady=(0, 10))
+
         # Creates Scrollable Text Display
         self.data_text = scrolledtext.ScrolledText(
             self.display_frame,
@@ -163,6 +172,12 @@ class DataDisplayGUI:
         # Updates Entry Count Label
         self.entry_count_label.config(
             text=f"Total Weather Entries: {self.entry_count}"
+        )
+
+        # Updates Output Window Status
+        self.output_status.config(
+            text="Weather measurements recorded successfully.",
+            fg="green"
         )
 
     def close_window(self):
