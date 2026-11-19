@@ -4,6 +4,7 @@ from tkinter import messagebox
 from account_gui import AccountGUI
 from login_gui import LoginGUI
 from weather_calculations import calculate_wind_chill, calculate_cloud_base
+from data_display_gui import DataDisplayGUI
 
 class MainWindow:
     def __init__(self):
@@ -67,6 +68,9 @@ class MainWindow:
             command = self.root.destroy
         )
         self.cancel_button.pack(pady=5)
+
+        # Tracks Data Display WIndow
+        self.data_display = None
 
 
     def open_account_window(self):
@@ -304,7 +308,8 @@ class MainWindow:
         self.show_file_button = tk.Button(
             button_frame,
             text = "Show File Data",
-            width = 15
+            width = 15,
+            command = self.show_data_display
         )
         self.show_file_button.pack(side = "left", padx = 10)
 
@@ -522,6 +527,23 @@ class MainWindow:
                 text = "Weather Calculations completed successfully.",
                 fg = "green"
             )
+
+    def show_data_display(self):
+
+        # Checks Whether Data Display Window Already Exists
+        if (
+            self.data_display is not None
+            and self.data_display.display_window.winfo_exists()
+        ):
+
+            # Brings Existing Window to Front
+            self.data_display.display_window.lift()
+            self.data_display.display_window.focus_force()
+
+        else:
+
+            # Creates New Data Display Window
+            self.data_display = DataDisplayGUI(self.root)
         
 if __name__ == "__main__":
     app = MainWindow()
